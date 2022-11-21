@@ -1,9 +1,12 @@
-public class Person {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Person implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String firstName;
     private String lastName;
     private String idNumber;
-
-    public Person() {}
 
     public Person(String firstName, String lastName, String idNumber) {
         this.firstName = firstName;
@@ -33,5 +36,10 @@ public class Person {
 
     public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + firstName + " " + lastName + ", ID number: " + idNumber;
     }
 }
