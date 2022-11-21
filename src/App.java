@@ -23,12 +23,12 @@ public class App {
                 case "2" -> System.out.println(people);
                 case "3" -> System.out.println("find");
                 default -> {
-                    System.out.println("Invalid input, please try again.");
+                    System.out.println("Invalid option, please try again.");
                     printMenu();
                     continue;
                 }
             }
-            System.out.println("Press 'C' to continue or press 'X' to exit");
+            System.out.println("Press 'C' to continue or press 'X' to exit.");
             userInput = scanner.nextLine();
             if ("c".equals(userInput)) {
                 printMenu();
@@ -56,8 +56,10 @@ public class App {
             System.err.println(e.getMessage());
         }
         if (inputIsValid) {
+            id = parseIdNumber(id);
             Person person = new Person(firstName, lastName, id);
             people.add(person);
+            System.out.println("Added new person successfully.");
         }
     }
 
@@ -66,7 +68,16 @@ public class App {
         if (lastName.isBlank()) throw new IllegalArgumentException("Last name cannot be blank!");
         if (!id.matches("[0-9]{10}") && !id.matches("[0-9]{6}/[0-9]{4}"))
             throw new IllegalArgumentException("ID number must be in 'YYMMDDXXXX' or 'YYMMDD/XXXX' format!");
+        id = parseIdNumber(id);
+        for (Person p: people) {
+            if (id.equals(p.getIdNumber())) throw new IllegalArgumentException("ID number must be unique!");
+        }
         return true;
+    }
+
+    private String parseIdNumber(String id) {
+        if (id.matches("[0-9]{10}")) id = id.substring(0, 6) + "/" + id.substring(6);
+        return id;
     }
 
     private void printMenu() {
