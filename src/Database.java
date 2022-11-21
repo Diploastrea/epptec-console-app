@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Database {
@@ -11,11 +12,28 @@ public class Database {
         this.scanner = scanner;
         this.ioUtils = ioUtils;
         this.filePath = filePath;
-        this.people = ioUtils.read(filePath);
+        this.people = ioUtils.readFromFile(filePath);
+    }
+
+    public void list() {
+        System.out.println(people);
     }
 
     public void save() {
-        ioUtils.save(people, filePath);
+        ioUtils.writeToFile(people, filePath);
+    }
+
+    public void remove() {
+        System.out.print("Enter ID of the person you want to remove ('YYMMDDXXXX' or 'YYMMDD/XXXX' format): ");
+        String id = scanner.nextLine();
+        String idNumber = parseIdNumber(id);
+        Optional<Person> person = people.stream().filter(p -> idNumber.equals(p.getIdNumber())).findFirst();
+        try {
+            Person toRemove = person.orElseThrow(() -> new IllegalArgumentException("No person found with provided ID!"));
+            people.remove(toRemove);
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public void addPerson() {
@@ -25,7 +43,7 @@ public class Database {
         firstName = scanner.nextLine();
         System.out.print("Enter last name: ");
         lastName = scanner.nextLine();
-        System.out.print("Enter ID number: ");
+        System.out.print("Enter ID number in 'YYMMDDXXXX' or 'YYMMDD/XXXX' format: ");
         id = scanner.nextLine();
         boolean inputIsValid = false;
         try {
@@ -54,6 +72,7 @@ public class Database {
     }
 
     private String parseIdNumber(String id) {
+        //parse id if not already in YYMMDD/XXXX format
         if (id.matches("[0-9]{10}")) id = id.substring(0, 6) + "/" + id.substring(6);
         return id;
     }

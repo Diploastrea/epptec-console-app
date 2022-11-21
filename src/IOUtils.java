@@ -4,7 +4,7 @@ import java.util.List;
 
 public class IOUtils {
 
-    public void save(List<Person> people, String filePath) {
+    public void writeToFile(List<Person> people, String filePath) {
         File file = new File(filePath);
         try {
             FileOutputStream fos = new FileOutputStream(file);
@@ -16,12 +16,12 @@ public class IOUtils {
         }
     }
 
-    public List<Person> read(String filePath) {
+    public List<Person> readFromFile(String filePath) {
         Object people = null;
         File file = new File(filePath);
         try {
             boolean createdNewFile = file.createNewFile(); //creates new file only if it doesn't exist
-            if (!createdNewFile) {
+            if (!createdNewFile && file.length() != 0) {
                 FileInputStream fis = new FileInputStream(file);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 people = ois.readObject();

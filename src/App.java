@@ -16,8 +16,9 @@ public class App {
             String userInput = scanner.nextLine();
             switch (userInput) {
                 case "1" -> database.addPerson();
-                case "2" -> System.out.println();
+                case "2" -> database.remove();
                 case "3" -> System.out.println("find");
+                case "4" -> database.list();
                 default -> {
                     System.out.println("Invalid option, please try again.");
                     printMenu();
