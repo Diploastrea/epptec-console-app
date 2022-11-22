@@ -13,4 +13,4 @@ Provide ID of the person to remove, if given person is not found, an error messa
 - ### Find person by ID
 Provide ID of the person to print their details (full name, age, ID). If given person is not found, an error message will be displayed.
 - ### List people in database
-Implemented for testing purposes. Prints details of each person in the database.
+Implemented for testing purposes. Prints details of each person in the database, if the database is empty, a simple message will be displayed instead.
