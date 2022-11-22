@@ -1,3 +1,7 @@
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -23,19 +27,6 @@ public class Database {
         ioUtils.writeToFile(people, filePath);
     }
 
-    public void remove() {
-        System.out.print("Enter ID of the person you want to remove ('YYMMDDXXXX' or 'YYMMDD/XXXX' format): ");
-        String id = scanner.nextLine();
-        String idNumber = parseIdNumber(id);
-        Optional<Person> person = people.stream().filter(p -> idNumber.equals(p.getIdNumber())).findFirst();
-        try {
-            Person toRemove = person.orElseThrow(() -> new IllegalArgumentException("No person found with provided ID!"));
-            people.remove(toRemove);
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
     public void addPerson() {
         String firstName, lastName, id;
         System.out.println("Adding new person");
@@ -59,6 +50,24 @@ public class Database {
         }
     }
 
+    public void removePerson() {
+        System.out.print("Enter ID of the person you want to remove ('YYMMDDXXXX' or 'YYMMDD/XXXX' format): ");
+        String id = scanner.nextLine();
+        Person person = findById(id);
+        people.remove(person);
+        System.out.println("Removed person successfully.");
+    }
+
+    public void printDetails() {
+        System.out.print("Enter ID of the person you want to find ('YYMMDDXXXX' or 'YYMMDD/XXXX' format): ");
+        String id = scanner.nextLine();
+        Person person = findById(id);
+        String fullName = person.getFirstName() + " " + person.getLastName();
+        System.out.println("Full name: " + fullName);
+        System.out.println("Age: " + calculateAge(person.getIdNumber()));
+        System.out.println("ID number: " + person.getIdNumber());
+    }
+
     private boolean validateInput(String firstName, String lastName, String id) throws IllegalArgumentException {
         if (firstName.isBlank()) throw new IllegalArgumentException("First name cannot be blank!");
         if (lastName.isBlank()) throw new IllegalArgumentException("Last name cannot be blank!");
@@ -75,5 +84,30 @@ public class Database {
         //parse id if not already in YYMMDD/XXXX format
         if (id.matches("[0-9]{10}")) id = id.substring(0, 6) + "/" + id.substring(6);
         return id;
+    }
+
+    private Person findById(String id) {
+        Person person = null;
+        String idNumber = parseIdNumber(id);
+        Optional<Person> optionalPerson = people.stream()
+                .filter(p -> idNumber.equals(p.getIdNumber()))
+                .findFirst();
+        try {
+            person = optionalPerson.orElseThrow(() -> new IllegalArgumentException("No person found with provided ID!"));
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+        }
+        return person;
+    }
+
+    private int calculateAge(String id) {
+        //compare birth year in ID with current birth year to determine century (20 -> 2020, 68 -> 1968)
+        int year = Integer.parseInt(id.substring(0, 2));
+        int currentYear = Year.now().getValue() - 2000;
+        year = year > currentYear ? 1900 + year : 2000 + year;
+        String dateInString = year + id.substring(2, 6);
+        LocalDate birthDate = LocalDate.parse(dateInString, DateTimeFormatter.BASIC_ISO_DATE);
+        LocalDate currentDate = LocalDate.now();
+        return Period.between(birthDate, currentDate).getYears();
     }
 }
