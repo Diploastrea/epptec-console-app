@@ -107,7 +107,7 @@ public class Database {
     }
 
     private int calculateAge(String id) {
-        //compare birth year in ID with current birth year to determine century (20 -> 2020, 68 -> 1968)
+        //compare birth year in ID with current year to determine century (20 -> 2020, 68 -> 1968)
         int year = Integer.parseInt(id.substring(0, 2));
         int currentYear = Year.now().getValue() - 2000;
         year = year > currentYear ? 1900 + year : 2000 + year;
