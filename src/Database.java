@@ -20,7 +20,11 @@ public class Database {
     }
 
     public void getPeople() {
-        people.forEach(System.out::println);
+        if (people.isEmpty()) {
+            System.out.println("Database is empty.");
+        } else {
+            people.forEach(System.out::println);
+        }
     }
 
     public void save() {
