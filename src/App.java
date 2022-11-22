@@ -18,7 +18,7 @@ public class App {
                 case "1" -> database.addPerson();
                 case "2" -> database.removePerson();
                 case "3" -> database.printDetails();
-                case "4" -> database.list();
+                case "4" -> database.getPeople();
                 default -> {
                     System.out.println("Invalid option, please try again.");
                     printMenu();
@@ -42,6 +42,7 @@ public class App {
         System.out.println("1 - Add new person");
         System.out.println("2 - Remove person");
         System.out.println("3 - Find person by ID number");
+        System.out.println("4 - List all people in the database");
         System.out.println("----------------------------");
     }
 }

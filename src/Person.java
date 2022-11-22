@@ -37,4 +37,9 @@ public class Person implements Serializable {
     public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
+
+    @Override
+    public String toString() {
+        return "Full name: " + firstName + " " + lastName + ", ID number: " + idNumber;
+    }
 }

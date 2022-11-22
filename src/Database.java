@@ -19,8 +19,8 @@ public class Database {
         this.people = ioUtils.readFromFile(filePath);
     }
 
-    public void list() {
-        System.out.println(people);
+    public void getPeople() {
+        people.forEach(System.out::println);
     }
 
     public void save() {
@@ -54,6 +54,7 @@ public class Database {
         System.out.print("Enter ID of the person you want to remove ('YYMMDDXXXX' or 'YYMMDD/XXXX' format): ");
         String id = scanner.nextLine();
         Person person = findById(id);
+        if (person == null) return;
         people.remove(person);
         System.out.println("Removed person successfully.");
     }
@@ -62,6 +63,7 @@ public class Database {
         System.out.print("Enter ID of the person you want to find ('YYMMDDXXXX' or 'YYMMDD/XXXX' format): ");
         String id = scanner.nextLine();
         Person person = findById(id);
+        if (person == null) return;
         String fullName = person.getFirstName() + " " + person.getLastName();
         System.out.println("Full name: " + fullName);
         System.out.println("Age: " + calculateAge(person.getIdNumber()));
