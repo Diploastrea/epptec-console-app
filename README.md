@@ -2,7 +2,7 @@
 
 ## How to start
 - Git clone repository
-- `cd` into folder with jar file and run `java -jar epptec-console-app.jar` in command line
+- `cd` into `epptec-console-app` folder and run `java -jar epptec-console-app.jar` in command line
 
 ## App features
 All data will be stored in a `db.txt` file, which serves as a database. The file will be created automatically if it doesn't exist already. Upon start up, database will be loaded into an `ArrayList<Person>`, upon exit any changes will be saved into the database.
